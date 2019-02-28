@@ -6,6 +6,39 @@ extern keymap_config_t keymap_config;
 #define META1 1
 #define META2 2
 
+#define IMPORT 0
+#define AS 1
+#define FROM 2
+#define NUMPY 3
+#define PANDAS 4
+#define SKLEARN 5
+
+const macro_t *action_get_macro(keyrecord_t *record, uint8_t id, uint8_t opt) {
+  if (record->event.pressed) {
+    switch(id) {
+      case IMPORT:
+        SEND_STRING("import");
+        break;
+      case AS:
+        SEND_STRING("as");
+        break;
+      case FROM:
+        SEND_STRING("from");
+        break;
+      case NUMPY:
+        SEND_STRING("import numpy as np");
+        break;
+      case PANDAS:
+        SEND_STRING("import pandas as pd");
+        break;
+      case SKLEARN:
+        SEND_STRING("pip install scikit-learn");
+        break;
+    }
+  }
+  return MACRO_NONE;
+};
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   /* BASE
@@ -56,10 +89,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * `------------------------------------------------'   `------------------------------------------------'
    */
   [META2] = LAYOUT( \
-    _______,   _______, _______, _______, _______, _______, _______,    _______, _______, _______, _______, _______, _______, _______, \
-    DF(META2), _______, _______, _______, _______, _______, _______,    _______, _______, _______, _______, _______, _______, _______, \
-    DF(META1), _______, _______, _______, _______, _______, _______,    _______, _______, _______, _______, _______, _______, _______, \
-    DF(BASE),  _______, _______, _______, _______, _______, _______,    _______, _______, _______, _______, _______, _______, _______ \
+    _______,   _______, _______, _______, _______, _______, M(IMPORT),    M(PANDAS),  _______, _______, _______, _______, _______, _______, \
+    DF(META2), _______, _______, _______, _______, _______, M(AS),        M(NUMPY),   _______, _______, _______, _______, _______, _______, \
+    DF(META1), _______, _______, _______, _______, _______, M(FROM),      M(SKLEARN), _______, _______, _______, _______, _______, _______, \
+    DF(BASE),  _______, _______, _______, _______, _______, _______,      _______,    _______, _______, _______, _______, _______, _______ \
   )
 
 };
